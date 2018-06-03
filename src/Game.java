@@ -9,6 +9,7 @@ public class Game {
 		//initialize players
 		players = new Player[1];
 		players[0] = new Player();
+		players[0].init();
 		//initialize Map
 		map = new Map();
 		map.init();
