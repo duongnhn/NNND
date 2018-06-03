@@ -3,6 +3,7 @@ public class Game {
 	
 	Player[] players;
 	Map map;
+	Boolean win = false;
 
 	void init() {
 		//initialize players
@@ -11,7 +12,15 @@ public class Game {
 		//initialize Map
 		map = new Map();
 		map.init();
-		//TODO: draw player first place
+		drawPlayersLocation();
+	}
+	
+	void drawPlayersLocation() {
+		for (Player player:players) {
+			int index = Utils.randomNumber(0, Constants.NUMBER_OF_PLACES-1);
+			player.place = map.places[index];
+			//TODO: make sure that no place has more than 2 players
+		}
 	}
 	
 	Boolean perform() {
@@ -20,17 +29,31 @@ public class Game {
 			//start a turn
 			for (Player currentPlayer: players) {
 				//TODO: draw action
-				Action action = Action.MOVE;//
+				Action action = Action.MOVE;
 				currentPlayer.perform(action);
+				//TODO: apply action
 			}
 			map.generateEnemy();
-			//TODO: check game end
-			if (Utils.flipCoin()) break;
-			else {
-				return false;
-			}
+			//TODO: apply enemy
+			if (isGameEnd()) return win;
 		}
-		return true;
 	}
 	
+	Boolean isGameEnd() {
+		//TODO: check game end
+		win = Utils.flipCoin();
+		if (Utils.flipCoin()) return true;
+		else {
+			return false;//lose
+		}
+		
+	}
+	
+	void applyAction() {
+		//TODO:
+	}
+	
+	void applyEnemy() {
+		//TODO:
+	}
 }
