@@ -14,8 +14,8 @@ public class Simulator {
 		System.out.println("Start simulation for "+ numberOfTrials);
 		for (int trial=1;trial<=numberOfTrials;trial++) {
 			Game game = new Game();
-			game.init();
-			if (game.perform()) numberOfWins++;
+			game.perform();
+			if (game.status == Status.WIN) numberOfWins++;
 		}
 		System.out.println("Number of wins: "+ numberOfWins);
 	}

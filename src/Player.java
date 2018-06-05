@@ -1,16 +1,25 @@
 
 public class Player {
-	Resource skill;
 	Place place;
 	Resource own;
 	
 	void init() {
-		skill = new Resource(1, 0, 0);
-		own = new Resource(3, 3, 3);//start with 3 gold, wood, food
+		own = new Resource(3, 3, 3);//start with 3 wood, steel, food
 	}
 	
-	void perform(Action action) {
+	Place perform() {
+		Action action = Utils.randomAction();
 		//update place
-		//update resource
+		Place newPlace = place;
+		switch (action) {
+		case MOVE:
+			newPlace = Utils.randomPlace(place.connectedPlaces);
+			break;
+		case STOP:
+			break;
+		default:
+			break;
+		}
+		return newPlace;
 	}
 }

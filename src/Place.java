@@ -1,7 +1,9 @@
+import java.util.ArrayList;
+
 public class Place {
 	Resource resource;
-	Place[] connectedPlaces;
-	Boolean hasEnemy = false;
+	ArrayList<Place> connectedPlaces = new ArrayList<Place>();
+	int enemy = 0;
 	String name;
 	
 	Place(String str, Resource r) {
