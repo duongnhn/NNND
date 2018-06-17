@@ -12,6 +12,7 @@ public class Game {
 	Map map;
 	HashSet<Place> visitedPlaces = new HashSet<Place>(); 
 	Status status = Status.CONTINUE;
+	int numberOfGeneratedEnemy;
 
 	void init() {
 		//initialize players
@@ -22,6 +23,8 @@ public class Game {
 		map = new Map();
 		map.init();
 		drawPlayersLocation();
+		//start with no enemy
+		numberOfGeneratedEnemy = 0;
 	}
 	
 	void drawPlayersLocation() {
@@ -39,13 +42,17 @@ public class Game {
 			for (Player currentPlayer: players) {
 				//player choose action
 				Place newPlace = currentPlayer.perform();
-				if (currentPlayer.own.food < 1) {
-					newPlace = currentPlayer.place;//no food to go, no choice other than stay
-				}
+				//no food to go or can not kill enemy then no choice other than stay
+				if ((currentPlayer.own.food < 1) || (currentPlayer.own.steel < newPlace.enemy+1)) {
+					newPlace = currentPlayer.place;
+				} 
 				applyRule(currentPlayer, newPlace);
+				if (isGameEnd()) return;
 			}
-			Place enemyPlace = map.generateEnemy();
-			applyEnemy(enemyPlace);
+			for (int i=0;i<Constants.NUMBER_OF_ENEMY_PER_TURN;i++) {
+				Place enemyPlace = map.generateEnemy();
+				applyEnemy(enemyPlace);				
+			}
 			if (isGameEnd()) return;
 		}
 	}
@@ -60,12 +67,16 @@ public class Game {
 		if (newPlace != player.place) {
 			player.own.add(new Resource(0, 0, -1));//move need 1 food
 		}
-		player.own.add(newPlace.resource);//collect resource from new place
-		//check enemy
+		//kill enemy if any and get booty
 		player.own.steel -= newPlace.enemy>0? newPlace.enemy+1:0;
+		for (int i=0;i<newPlace.enemy;i++) {
+			Resource booty = Utils.randomBooty();
+			player.own.add(booty);			
+		}
 		newPlace.enemy = 0;
-		//update place
+		//update player and place
 		player.place = newPlace;
+		player.own.add(newPlace.resource);//collect resource from new place
 		visitedPlaces.add(newPlace);
 		if (visitedPlaces.size() == Constants.NUMBER_OF_PLACES) {
 			status = Status.WIN;
@@ -73,6 +84,12 @@ public class Game {
 	}
 	
 	void applyEnemy(Place place) {
+		numberOfGeneratedEnemy++;
+		//check if number of generated enemy reach limit
+		if (numberOfGeneratedEnemy == Constants.TOTAL_ENEMY_LIMIT) {
+			status = Status.LOSE;
+			return;
+		}
 		for (Player currentPlayer:players) {
 			if (currentPlayer.place == place) {
 				if (place.enemy >= Constants.MAX_ENEMY) {

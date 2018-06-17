@@ -5,7 +5,7 @@ public class Simulator {
 	int numberOfWins;
 	
 	void init() {
-		numberOfTrials = 5;
+		numberOfTrials = 10;
 		numberOfWins = 0;
 		//TODO
 	}

@@ -26,4 +26,15 @@ public class Utils {
 		int i = randomNumber(0, arr.length-1);
 		return arr[i];
 	}
+	
+	static Resource randomBooty() {
+		int i = randomNumber(0, Type.values().length-1);
+		Resource r = new Resource(0, 0, 0);
+		switch (i) {
+			case 0: r.food = 1;
+			case 1: r.steel = 1;
+			case 2: r.wood = 1;
+		}
+		return r;
+	}
 }
