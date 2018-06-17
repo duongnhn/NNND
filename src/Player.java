@@ -9,7 +9,7 @@ public class Player {
 	
 	Place perform() {
 		Action action = Utils.randomAction();
-		System.out.println("action: "+ action.toString());
+		Utils.log("action: "+ action.toString());
 		//update place
 		Place newPlace = null;
 		switch (action) {

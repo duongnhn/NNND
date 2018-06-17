@@ -7,4 +7,5 @@ public class Constants {
 	static final int TOTAL_ENEMY_LIMIT = 3*NUMBER_OF_PLACES;
 	static final int NUMBER_OF_ENEMY_PER_TURN = 1;
 	static final int NUMBER_OF_TRIALS = 10;
+	static final boolean DEBUG = false;
 }

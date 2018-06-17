@@ -32,4 +32,10 @@ public class Utils {
 		}
 		return r;
 	}
+	
+	static void log(String str) {
+		if (Constants.DEBUG) {
+			System.out.println(str);
+		}
+	}
 }
