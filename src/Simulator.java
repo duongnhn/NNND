@@ -5,9 +5,8 @@ public class Simulator {
 	int numberOfWins;
 	
 	void init() {
-		numberOfTrials = 10;
+		numberOfTrials = Constants.NUMBER_OF_TRIALS;
 		numberOfWins = 0;
-		//TODO
 	}
 	
 	void start() {

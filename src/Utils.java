@@ -10,12 +10,7 @@ public class Utils {
 	static Boolean flipCoin() {
 		return randomNumber(0, 1) == 0;
 	}
-	
-	static void linkPlaces(Place p1, Place p2) {
-		p1.connectedPlaces.add(p2);
-		p2.connectedPlaces.add(p1);
-	}
-	
+		
 	static Place randomPlace(ArrayList<Place> arr) {
 		int i = randomNumber(0, arr.size()-1);
 		return arr.get(i);

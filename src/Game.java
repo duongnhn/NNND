@@ -39,6 +39,7 @@ public class Game {
 		init();				
 		while (true) {
 			//start a turn
+			System.out.println("Start a turn");
 			for (Player currentPlayer: players) {
 				//player choose action
 				Place newPlace = currentPlayer.perform();
@@ -52,8 +53,10 @@ public class Game {
 			for (int i=0;i<Constants.NUMBER_OF_ENEMY_PER_TURN;i++) {
 				Place enemyPlace = map.generateEnemy();
 				applyEnemy(enemyPlace);				
+				if (isGameEnd()) return;
 			}
-			if (isGameEnd()) return;
+			//end a turn
+			System.out.println("End a turn");
 		}
 	}
 	
@@ -63,6 +66,7 @@ public class Game {
 	}
 	
 	void applyRule(Player player, Place newPlace) {
+		System.out.println("newPlace: "+ newPlace.name);
 		//update resource
 		if (newPlace != player.place) {
 			player.own.add(new Resource(0, 0, -1));//move need 1 food
@@ -84,6 +88,7 @@ public class Game {
 	}
 	
 	void applyEnemy(Place place) {
+		System.out.println("enemyPlace: "+place.name);
 		numberOfGeneratedEnemy++;
 		//check if number of generated enemy reach limit
 		if (numberOfGeneratedEnemy == Constants.TOTAL_ENEMY_LIMIT) {
@@ -92,14 +97,16 @@ public class Game {
 		}
 		for (Player currentPlayer:players) {
 			if (currentPlayer.place == place) {
-				if (place.enemy >= Constants.MAX_ENEMY) {
+				if (place.enemy >= Constants.MAX_ENEMY_PER_PLACE) {
 					status = Status.LOSE;
 					return;
 				}
-				currentPlayer.own.steel -= place.enemy;
+				currentPlayer.own.steel -= place.enemy+1;
 				if (currentPlayer.own.steel < 0) {
 					status = Status.LOSE;
+					return;
 				}
+				place.enemy = 0;
 				return;
 			}
 		}

@@ -9,13 +9,15 @@ public class Player {
 	
 	Place perform() {
 		Action action = Utils.randomAction();
+		System.out.println("action: "+ action.toString());
 		//update place
-		Place newPlace = place;
+		Place newPlace = null;
 		switch (action) {
 		case MOVE:
 			newPlace = Utils.randomPlace(place.connectedPlaces);
 			break;
 		case STOP:
+			newPlace = place;
 			break;
 		default:
 			break;
