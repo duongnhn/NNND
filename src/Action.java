@@ -2,5 +2,5 @@
 public enum Action {
 	MOVE,
 	STOP,
-//	BUILD,
+	BUILD,
 }

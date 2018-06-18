@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Player {
 	Place place;
 	Resource own;
+	ArrayList<Place> housePlaces;
 	int index;
 	
 	Player(int i){
@@ -11,27 +12,32 @@ public class Player {
 	
 	void init() {
 		own = new Resource(3, 3, 3);//start with 3 wood, steel, food
+		housePlaces = new ArrayList<Place>();
 	}
 	
-	Place perform() {
+	Action perform() {
 		Action action = Utils.randomAction();
 		Utils.log("action: "+ action.toString());
 		//update place
-		Place newPlace = null;
-		switch (action) {
-		case MOVE:
-			newPlace = Utils.randomPlace(place.connectedPlaces);
-			break;
-		case STOP:
-			newPlace = place;
-			break;
-		}
-		return newPlace;
+		return action;
+	}
+	
+	void buildHouse() {
+		own.wood -= 3;
+		housePlaces.add(place);
 	}
 	
 	void collectResource(ArrayList<Place> places) {
 		for (Place place:places) {
 			own.add(place.resource);
+		}
+	}
+	
+	void collectFromHouses() {
+		for (Place place:housePlaces) {
+			if (place.enemy == 0) {
+				own.add(place.resource);
+			}
 		}
 	}
 }

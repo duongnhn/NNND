@@ -46,17 +46,36 @@ public class Game {
 			for (Player currentPlayer: players) {
 				//player choose action
 				Place newPlace = null;
-				Place oldPlace = currentPlayer.place;
+				Place currentPlace = currentPlayer.place;
 				ArrayList<Place> visitedPlacesInTurn = new ArrayList<Place>();
+				boolean canBuild = true;
 				//player can move until he/she choose to stop or can not move
-				while (newPlace != oldPlace) {
-					newPlace = currentPlayer.perform();
-					//no food to go or can not kill enemy then no choice other than stay
-					if ((currentPlayer.own.food < 1) || (currentPlayer.own.steel < newPlace.enemy+1)) {
-						newPlace = currentPlayer.place;
+				while (newPlace != currentPlace) {
+					//player choose an action
+					Action action = currentPlayer.perform();
+					newPlace = currentPlace;
+					switch (action) {
+						case MOVE:
+							//no food to go or can not kill enemy then no choice other than stay
+							if ((currentPlayer.own.food < 1) || (currentPlayer.own.steel < newPlace.enemy+1)) {
+								break;
+							}
+							//can not build and move in the same turn
+							canBuild = false;
+							newPlace = Utils.randomPlace(currentPlace.connectedPlaces);
+							//re-assign before move
+							currentPlace = currentPlayer.place;
+							applyRuleForMove(currentPlayer, newPlace);
+							break;
+						case STOP:
+						case BUILD:
+							//need 3 wood to build
+							if ((currentPlayer.own.wood < 3) || !canBuild) {
+								break;
+							}
+							applyRuleForBuild(currentPlayer, currentPlace);
+							break;
 					}
-					oldPlace = currentPlayer.place;
-					applyRule(currentPlayer, newPlace);
 					visitedPlacesInTurn.add(newPlace);
 					if (isGameEnd()) return;					
 				}
@@ -78,12 +97,16 @@ public class Game {
 		return true;
 	}
 	
-	void applyRule(Player player, Place newPlace) {
+	void applyRuleForBuild(Player player, Place place) {
+		//build need 3 wood
+		player.own.wood -= 3;
+		player.housePlaces.add(place);
+	}
+	
+	void applyRuleForMove(Player player, Place newPlace) {
 		Utils.log("newPlace: "+ newPlace.name);
-		//update resource
-		if (newPlace != player.place) {
-			player.own.food--;//move need 1 food
-		}
+		//move need 1 food
+		player.own.food--;
 		//kill enemy if any and get booty
 		player.own.steel -= newPlace.enemy>0? newPlace.enemy+1:0;
 		for (int i=0;i<newPlace.enemy;i++) {
