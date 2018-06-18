@@ -1,13 +1,17 @@
 # NNND
-The very first version:
-- Don't use wood for anything yet
+This version contains following features:
 - Don't make use of any character and built-in skills
-- Only two actions: move and stop
+- 3 actions: move, stop, build
 - Player choose action and place at uniformly random
-- Collect war booty after killing an enemy
-- Maps of 4 places: THANG LONG, THAI BINH, HOA BINH, THANH HOA
-- 1 player
+- Enemies are generated at uniformly random
+- Maps of 5 places: THANG LONG, THAI BINH, HOA BINH, THANH HOA, NGHE AN
+- Multiple players support
 
+# Missing feature:
+- Swap resource
+- Share resource between players
+- Escape when encoutering enemy
+ 
 # Run simulator
 - Manually construct maps
 - Set constants 
