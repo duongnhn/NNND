@@ -69,8 +69,8 @@ public class Game {
 							break;
 						case STOP:
 						case BUILD:
-							//need 3 wood to build
-							if ((currentPlayer.own.wood < 3) || !canBuild) {
+							//cannot build if exists house or already move or not enough wood
+							if (currentPlace.hasHouse || (currentPlayer.own.wood < Constants.NUMER_OF_WOODS_TO_BUILD) || !canBuild) {
 								break;
 							}
 							applyRuleForBuild(currentPlayer, currentPlace);
@@ -98,11 +98,11 @@ public class Game {
 	}
 	
 	void applyRuleForBuild(Player player, Place place) {
-		//build need 3 wood
-		player.own.wood -= 3;
+		player.own.wood -= Constants.NUMER_OF_WOODS_TO_BUILD;
 		player.housePlaces.add(place);
+		place.hasHouse = true;
 	}
-	
+		
 	void applyRuleForMove(Player player, Place newPlace) {
 		Utils.log("newPlace: "+ newPlace.name);
 		//move need 1 food

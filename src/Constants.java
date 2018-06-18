@@ -7,6 +7,8 @@ public class Constants {
 	static final int NUMBER_OF_ENEMY_PER_TURN = 1;
 	static final int NUMBER_OF_TRIALS = 100;
 	
+	static final int NUMER_OF_WOODS_TO_BUILD = 3;
+	
 	/* Only print log to console when set Debug to true */
 	static final boolean DEBUG = true;
 }

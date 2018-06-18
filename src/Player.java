@@ -21,12 +21,7 @@ public class Player {
 		//update place
 		return action;
 	}
-	
-	void buildHouse() {
-		own.wood -= 3;
-		housePlaces.add(place);
-	}
-	
+		
 	void collectResource(ArrayList<Place> places) {
 		for (Place place:places) {
 			own.add(place.resource);
