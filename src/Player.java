@@ -11,7 +11,7 @@ public class Player {
 	}
 	
 	void init() {
-		own = new Resource(3, 3, 3);//start with 3 wood, steel, food
+		own = new Resource(Constants.WOOD_TO_START, Constants.STEEL_TO_START, Constants.FOOD_TO_START);
 		housePlaces = new ArrayList<Place>();
 	}
 	

@@ -57,7 +57,7 @@ public class Game {
 					switch (action) {
 						case MOVE:
 							//no food to go or can not kill enemy then no choice other than stay
-							if ((currentPlayer.own.food < 1) || (currentPlayer.own.steel < newPlace.enemy+1)) {
+							if ((currentPlayer.own.food < Constants.FOOD_TO_MOVE) || (currentPlayer.own.steel < newPlace.enemy+Constants.STEEL_TO_KILL)) {
 								break;
 							}
 							//can not build and move in the same turn
@@ -70,7 +70,7 @@ public class Game {
 						case STOP:
 						case BUILD:
 							//cannot build if exists house or already move or not enough wood
-							if (currentPlace.hasHouse || (currentPlayer.own.wood < Constants.NUMER_OF_WOODS_TO_BUILD) || !canBuild) {
+							if (currentPlace.hasHouse || (currentPlayer.own.wood < Constants.WOOD_TO_BUILD) || !canBuild) {
 								break;
 							}
 							applyRuleForBuild(currentPlayer, currentPlace);
@@ -98,7 +98,7 @@ public class Game {
 	}
 	
 	void applyRuleForBuild(Player player, Place place) {
-		player.own.wood -= Constants.NUMER_OF_WOODS_TO_BUILD;
+		player.own.wood -= Constants.WOOD_TO_BUILD;
 		player.housePlaces.add(place);
 		place.hasHouse = true;
 	}
@@ -106,9 +106,9 @@ public class Game {
 	void applyRuleForMove(Player player, Place newPlace) {
 		Utils.log("newPlace: "+ newPlace.name);
 		//move need 1 food
-		player.own.food--;
+		player.own.food -= Constants.FOOD_TO_MOVE;
 		//kill enemy if any and get booty
-		player.own.steel -= newPlace.enemy>0? newPlace.enemy+1:0;
+		player.own.steel -= newPlace.enemy>0? newPlace.enemy+Constants.STEEL_TO_KILL:0;
 		for (int i=0;i<newPlace.enemy;i++) {
 			Resource booty = Utils.randomBooty();
 			player.own.add(booty);			
@@ -133,13 +133,12 @@ public class Game {
 		for (Player currentPlayer:players) {
 			if (currentPlayer.place == place) {
 				// need to kill enemy
-				currentPlayer.own.steel -= place.enemy+1;
+				currentPlayer.own.steel -= Constants.STEEL_TO_KILL;
 				if (currentPlayer.own.steel < 0) {
 					status = Status.LOSE;
 					return;
 				}
 				place.enemy = 0;
-				return;
 			}
 		}
 	}
