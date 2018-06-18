@@ -1,7 +1,13 @@
+import java.util.ArrayList;
 
 public class Player {
 	Place place;
 	Resource own;
+	int index;
+	
+	Player(int i){
+		index = i;
+	}
 	
 	void init() {
 		own = new Resource(3, 3, 3);//start with 3 wood, steel, food
@@ -19,9 +25,13 @@ public class Player {
 		case STOP:
 			newPlace = place;
 			break;
-		default:
-			break;
 		}
 		return newPlace;
+	}
+	
+	void collectResource(ArrayList<Place> places) {
+		for (Place place:places) {
+			own.add(place.resource);
+		}
 	}
 }
