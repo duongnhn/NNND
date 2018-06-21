@@ -10,11 +10,10 @@ This version contains following features:
 # Missing feature:
 - Swap resource
 - Share resource between players
-- Escape when encoutering enemy
  
 # Run simulator
 - Manually construct maps
-- Set constants 
+- Set parameters in constants
 - Execute main in simulator
 
 
