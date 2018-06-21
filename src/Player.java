@@ -17,7 +17,7 @@ public class Player {
 	
 	Action perform() {
 		Action action = Utils.randomAction();
-		Utils.log("action: "+ action.toString());
+		Utils.log("player choose action: "+ action.toString());
 		//update place
 		return action;
 	}

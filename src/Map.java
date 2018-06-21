@@ -11,11 +11,11 @@ public class Map {
 		
 	void init() {
 		places = new Place[Constants.NUMBER_OF_PLACES];
-		places[Name.HA_NOI.ordinal()] = new Place("Ha Noi", new Resource(0, 0, 1));//food
-		places[Name.HOA_BINH.ordinal()] = new Place("Hoa Binh", new Resource(0, 1, 0));//steel
-		places[Name.THAI_BINH.ordinal()] = new Place("Thai Binh", new Resource(0, 0, 1));//food
-		places[Name.THANH_HOA.ordinal()] = new Place("Thanh Hoa", new Resource(1, 0, 0));//wood
-		places[Name.NGHE_AN.ordinal()] = new Place("Nghe An", new Resource(1, 0, 0));//wood
+		places[Name.HA_NOI.ordinal()] = new Place(Name.HA_NOI.toString(), new Resource(0, 0, 1));//food
+		places[Name.HOA_BINH.ordinal()] = new Place(Name.HOA_BINH.toString(), new Resource(0, 1, 0));//steel
+		places[Name.THAI_BINH.ordinal()] = new Place(Name.THAI_BINH.toString(), new Resource(0, 0, 1));//food
+		places[Name.THANH_HOA.ordinal()] = new Place(Name.THANH_HOA.toString(), new Resource(1, 0, 0));//wood
+		places[Name.NGHE_AN.ordinal()] = new Place(Name.NGHE_AN.toString(), new Resource(1, 0, 0));//wood
 		
 		//link places
 		linkPlaces(Name.HA_NOI.ordinal(), Name.HOA_BINH.ordinal());

@@ -14,7 +14,13 @@ public class Simulator {
 		for (int trial=1;trial<=numberOfTrials;trial++) {
 			Game game = new Game();
 			game.perform();
-			if (game.status == Status.WIN) numberOfWins++;
+			if (game.status == Status.WIN) {
+				Utils.log("Win the game");
+				numberOfWins++;
+			}
+			else {
+				Utils.log("Lose the game");
+			}
 		}
 		System.out.println("Number of wins: "+ numberOfWins);
 	}

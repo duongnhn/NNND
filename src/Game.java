@@ -58,6 +58,7 @@ public class Game {
 						case MOVE:
 							//no food to go or can not kill enemy then no choice other than stay
 							if ((currentPlayer.own.food < Constants.FOOD_TO_MOVE) || (currentPlayer.own.steel < newPlace.enemy+Constants.STEEL_TO_KILL)) {
+								Utils.log("can not MOVE");
 								break;
 							}
 							//can not build and move in the same turn
@@ -71,11 +72,13 @@ public class Game {
 						case BUILD:
 							//cannot build if exists house or already move or not enough wood
 							if (currentPlace.hasHouse || (currentPlayer.own.wood < Constants.WOOD_TO_BUILD) || !canBuild) {
+								Utils.log("can not BUILD");
 								break;
 							}
 							applyRuleForBuild(currentPlayer, currentPlace);
 							break;
 					}
+					Utils.log("Player "+currentPlayer.index+" at place "+ currentPlayer.place.name);
 					visitedPlacesInTurn.add(newPlace);
 					if (isGameEnd()) return;					
 				}
