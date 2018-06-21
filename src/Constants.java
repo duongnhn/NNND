@@ -1,3 +1,4 @@
+import java.util.HashMap;
 
 public class Constants {
 	/* Game settings */
@@ -22,4 +23,7 @@ public class Constants {
 
 	/* Simulation configuration */
 	static final int NUMBER_OF_TRIALS = 100;
+	
+	/* Player configuration */
+	static final double[] PLAYER_ACTION_PROBABILITY = {0.7, 0.1, 0.2}; 	// MOVE, STOP, BUILD
 }

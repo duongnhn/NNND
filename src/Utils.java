@@ -22,6 +22,12 @@ public class Utils {
 		return arr[i];
 	}
 	
+	static Action randomAction(double[] arr) {
+		Action[] actionArr = Action.values();
+		int i = randomNumber(arr);
+		return actionArr[i];
+	}
+	
 	static Resource randomBooty() {
 		int i = randomNumber(0, Type.values().length-1);
 		Resource r = new Resource(0, 0, 0);
@@ -37,5 +43,18 @@ public class Utils {
 		if (Constants.DEBUG) {
 			System.out.println(str);
 		}
+	}
+	
+	static int randomNumber(double[] arr) {
+		int length = arr.length;
+		for (int i=0;i<length-1;i++) {
+			arr[i+1] += arr[i]; 
+		}
+		double change = Math.random();
+		int n = 0;
+		while (arr[n]<change) {
+			n++;
+		}
+		return n;
 	}
 }

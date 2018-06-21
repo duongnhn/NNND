@@ -16,7 +16,7 @@ public class Player {
 	}
 	
 	Action perform() {
-		Action action = Utils.randomAction();
+		Action action = Utils.randomAction(Constants.PLAYER_ACTION_PROBABILITY);
 		Utils.log("player choose action: "+ action.toString());
 		//update place
 		return action;
