@@ -9,7 +9,7 @@ enum Status {
 
 public class Game {
 	
-	Player[] players;
+	ArrayList<Player> players;
 	Map map;
 	HashSet<Place> visitedPlaces = new HashSet<Place>(); 
 	Status status = Status.CONTINUE;
@@ -17,10 +17,11 @@ public class Game {
 
 	void init() {
 		//initialize players
-		players = new Player[Constants.NUMBER_OF_PLAYERS];
+		players = new ArrayList<Player>();
 		for (int i=0;i<Constants.NUMBER_OF_PLAYERS;i++) {
-			players[i] = new Player(i);
-			players[i].init();
+			Player player = new Player(i);
+			player.init();
+			players.add(player);
 		}
 		//initialize Map
 		map = new Map();
@@ -52,7 +53,7 @@ public class Game {
 				//player can move until he/she choose to stop or can not move
 				while (newPlace != currentPlace) {
 					//player choose an action
-					Action action = currentPlayer.perform();
+					Action action = currentPlayer.selectAction();
 					newPlace = currentPlace;
 					switch (action) {
 						case MOVE:
@@ -69,6 +70,7 @@ public class Game {
 							applyRuleForMove(currentPlayer, newPlace);
 							break;
 						case STOP:
+							break;
 						case BUILD:
 							//cannot build if exists house or already move or not enough wood
 							if (currentPlace.hasHouse || (currentPlayer.own.wood < Constants.WOOD_TO_BUILD) || !canBuild) {
@@ -133,16 +135,35 @@ public class Game {
 			status = Status.LOSE;
 			return;
 		}
+		ArrayList<Place> placesToRun = Utils.placesToRunFrom(place);
+		ArrayList<Player> playersToRemove = new ArrayList<Player>();
 		for (Player currentPlayer:players) {
 			if (currentPlayer.place == place) {
-				// need to kill enemy
-				currentPlayer.own.steel -= Constants.STEEL_TO_KILL;
-				if (currentPlayer.own.steel < 0) {
-					status = Status.LOSE;
-					return;
+				// currentPlayer face enemy
+				boolean canKill = currentPlayer.own.steel >= Constants.STEEL_TO_KILL;
+				boolean canRun = (currentPlayer.own.food >= Constants.FOOD_TO_MOVE) && (placesToRun.size()>0);
+				if (!canKill && !canRun) {
+					//currentPlayer is dead
+					playersToRemove.add(currentPlayer);
+					continue;
 				}
-				place.enemy = 0;
+				EnemyAction playerEnemyAction = currentPlayer.selectEnemyAction();
+				if (!canKill) {
+					playerEnemyAction = EnemyAction.RUN;
+				}
+				if (!canRun) {
+					playerEnemyAction = EnemyAction.KILL;
+				}
+				currentPlayer.performEnemyAction(playerEnemyAction);
 			}
+		}
+		for (Player player:playersToRemove) {
+			players.remove(player);
+		}
+		// check if no player left
+		if (players.size() == 0) {
+			status = Status.LOSE;
+			return;			
 		}
 	}
 }

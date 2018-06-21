@@ -28,6 +28,12 @@ public class Utils {
 		return actionArr[i];
 	}
 	
+	static EnemyAction randomEnemyAction(double[] arr) {
+		EnemyAction[] actionArr = EnemyAction.values();
+		int i = randomNumber(arr);
+		return actionArr[i];
+	}
+	
 	static Resource randomBooty() {
 		int i = randomNumber(0, Type.values().length-1);
 		Resource r = new Resource(0, 0, 0);
@@ -56,5 +62,15 @@ public class Utils {
 			n++;
 		}
 		return n;
+	}
+	
+	static ArrayList<Place> placesToRunFrom(Place place) {
+		ArrayList<Place> places = new ArrayList<Place>();
+		for (Place placeToCheck:place.connectedPlaces) {
+			if (placeToCheck.enemy == 0) {
+				places.add(placeToCheck);
+			}
+		}
+		return places;
 	}
 }

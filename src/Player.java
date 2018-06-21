@@ -15,13 +15,38 @@ public class Player {
 		housePlaces = new ArrayList<Place>();
 	}
 	
-	Action perform() {
+	Action selectAction() {
 		Action action = Utils.randomAction(Constants.PLAYER_ACTION_PROBABILITY);
 		Utils.log("player choose action: "+ action.toString());
-		//update place
 		return action;
 	}
-		
+	
+	EnemyAction selectEnemyAction() {
+		EnemyAction action = Utils.randomEnemyAction(Constants.PLAYER_ENEMY_ACTION_PROBABILITY);
+		Utils.log("player choose enemy action: "+ action.toString());
+		return action;
+	}
+	
+	void performEnemyAction(EnemyAction action) {
+		Utils.log("player perform enemy action: "+action.toString());
+		switch (action) {
+			case KILL:
+				own.steel -= Constants.STEEL_TO_KILL;
+				place.enemy = 0;					
+				break;
+			case RUN:
+				own.food -= Constants.FOOD_TO_MOVE;
+				ArrayList<Place> noEnemyPlaces = Utils.placesToRunFrom(place);
+				Place placeToRun = Utils.randomPlace(noEnemyPlaces);
+				Utils.log("player run to place: "+ placeToRun.name);
+				place = placeToRun;
+				break;
+		}
+	}
+	
+	void run() {
+	}
+	
 	void collectResource(ArrayList<Place> places) {
 		for (Place place:places) {
 			own.add(place.resource);
