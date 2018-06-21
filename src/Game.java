@@ -121,12 +121,16 @@ public class Game {
 		newPlace.enemy = 0;
 		//update player and place
 		player.place = newPlace;
+		checkWinAfterMove(newPlace);
+	}	
+
+	void checkWinAfterMove(Place newPlace) {
 		visitedPlaces.add(newPlace);
 		if (visitedPlaces.size() == Constants.NUMBER_OF_PLACES) {
 			status = Status.WIN;
-		}
+		}		
 	}
-		
+	
 	void applyEnemy(Place place) {
 		Utils.log("enemyPlace: "+place.name);
 		numberOfGeneratedEnemy++;
@@ -155,6 +159,7 @@ public class Game {
 					playerEnemyAction = EnemyAction.KILL;
 				}
 				currentPlayer.performEnemyAction(playerEnemyAction);
+				checkWinAfterMove(currentPlayer.place);
 			}
 		}
 		for (Player player:playersToRemove) {
