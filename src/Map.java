@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 enum Name {
 	HA_NOI,
 	HOA_BINH,
@@ -8,6 +10,8 @@ enum Name {
 
 public class Map {
 	static Place[] places;
+	private int count;
+	private ArrayList<Place> permutationList = new ArrayList<Place>();
 		
 	void init() {
 		places = new Place[Constants.NUMBER_OF_PLACES];
@@ -23,12 +27,22 @@ public class Map {
 		linkPlaces(Name.HOA_BINH.ordinal(), Name.THANH_HOA.ordinal());
 		linkPlaces(Name.THAI_BINH.ordinal(), Name.THANH_HOA.ordinal());
 		linkPlaces(Name.THANH_HOA.ordinal(), Name.NGHE_AN.ordinal());
+		
+		//enemy setup
+		count = -1;
+		for (Place place:places) {
+			permutationList.add(place);
+		}
 	}
 
 	public Place generateEnemy() {
-		int index = Utils.randomNumber(0, Constants.NUMBER_OF_PLACES-1);
-		places[index].enemy += 1;
-		return places[index];
+		count++;
+		if (count%Constants.NUMBER_OF_PLACES==0) {
+			//start shuffle
+			java.util.Collections.shuffle(permutationList);
+			count = 0;
+		}
+		return permutationList.get(count);
 	}
 	
 	static void linkPlaces(int i1, int i2) {

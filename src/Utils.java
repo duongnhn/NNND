@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Utils {
@@ -49,6 +51,17 @@ public class Utils {
 		if (Constants.DEBUG) {
 			System.out.println(str);
 		}
+	}
+	
+	static void log(HashSet<Place> places) {
+		if (!Constants.DEBUG) {
+			return;
+		}
+		Iterator<Place> iter = places.iterator();
+		while (iter.hasNext()) {
+		    System.out.print(iter.next().name+" ");
+		}
+		System.out.println("@_@");
 	}
 	
 	static int randomNumber(double[] arr) {

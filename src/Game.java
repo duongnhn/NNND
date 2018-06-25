@@ -43,9 +43,11 @@ public class Game {
 		init();				
 		while (true) {
 			//start a turn
-			Utils.log("\n Start a turn");
+			Utils.log("++++++++++++++++++++++");
+			Utils.log("Start a turn");
 			ArrayList<Player> playersToRemove = new ArrayList<Player>();
 			for (Player currentPlayer: players) {
+				Utils.log("Start a turn for player "+ currentPlayer.index);
 				//player choose action
 				Place newPlace = null;
 				Place currentPlace = currentPlayer.place;
@@ -105,8 +107,12 @@ public class Game {
 			removePlayers(playersToRemove);
 			if (isGameEnd()) return;
 			Utils.log("End a turn");
+			Utils.log("Visistedplaces: ");
+			Utils.log(visitedPlaces);
 		}
 	}
+	
+	
 
 	void removePlayers(ArrayList<Player> playersToRemove) {
 		for (Player player:playersToRemove) {
