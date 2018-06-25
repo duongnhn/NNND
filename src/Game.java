@@ -44,6 +44,7 @@ public class Game {
 		while (true) {
 			//start a turn
 			Utils.log("\n Start a turn");
+			ArrayList<Player> playersToRemove = new ArrayList<Player>();
 			for (Player currentPlayer: players) {
 				//player choose action
 				Place newPlace = null;
@@ -84,16 +85,37 @@ public class Game {
 					visitedPlacesInTurn.add(newPlace);
 					if (isGameEnd()) return;					
 				}
-				//player collect resource
-				currentPlayer.collectResource(visitedPlacesInTurn);
+				//player collect resource from current place and house
+				currentPlayer.collectResource();
+				currentPlayer.collectFromHouses();
+				//put enemy
+				ArrayList<Player> playersToRemoveForThisEnemy;
+				for (int i=0;i<Constants.NUMBER_OF_ENEMY_PER_TURN;i++) {
+					Place enemyPlace = map.generateEnemy();
+					playersToRemoveForThisEnemy=applyEnemy(enemyPlace);		
+					for (Player player:playersToRemoveForThisEnemy) {
+						playersToRemove.add(player);
+					}
+					if (isGameEnd()) return;
+				}
+				//end a turn for one player
+				Utils.log("End a turn for player "+currentPlayer.index);
 			}
-			for (int i=0;i<Constants.NUMBER_OF_ENEMY_PER_TURN;i++) {
-				Place enemyPlace = map.generateEnemy();
-				applyEnemy(enemyPlace);				
-				if (isGameEnd()) return;
-			}
-			//end a turn
+			//remove any dead players before ending a turn
+			removePlayers(playersToRemove);
+			if (isGameEnd()) return;
 			Utils.log("End a turn");
+		}
+	}
+
+	void removePlayers(ArrayList<Player> playersToRemove) {
+		for (Player player:playersToRemove) {
+			players.remove(player);
+		}
+		// check if no player left
+		if (players.size() == 0) {
+			status = Status.LOSE;
+			return;			
 		}
 	}
 	
@@ -131,16 +153,16 @@ public class Game {
 		}		
 	}
 	
-	void applyEnemy(Place place) {
+	ArrayList<Player> applyEnemy(Place place) {
+		ArrayList<Player> playersToRemove = new ArrayList<Player>();
 		Utils.log("enemyPlace: "+place.name);
 		numberOfGeneratedEnemy++;
 		//check if number of generated enemy reach limit
 		if (numberOfGeneratedEnemy == Constants.TOTAL_ENEMY_LIMIT) {
 			status = Status.LOSE;
-			return;
+			return playersToRemove;
 		}
 		ArrayList<Place> placesToRun = Utils.placesToRunFrom(place);
-		ArrayList<Player> playersToRemove = new ArrayList<Player>();
 		for (Player currentPlayer:players) {
 			if (currentPlayer.place == place) {
 				// currentPlayer face enemy
@@ -162,13 +184,6 @@ public class Game {
 				checkWinAfterMove(currentPlayer.place);
 			}
 		}
-		for (Player player:playersToRemove) {
-			players.remove(player);
-		}
-		// check if no player left
-		if (players.size() == 0) {
-			status = Status.LOSE;
-			return;			
-		}
+		return playersToRemove;
 	}
 }

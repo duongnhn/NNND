@@ -53,6 +53,10 @@ public class Player {
 		}
 	}
 	
+	void collectResource() {
+		own.add(place.resource);
+	}
+	
 	void collectFromHouses() {
 		for (Place place:housePlaces) {
 			if (place.enemy == 0) {
