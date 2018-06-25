@@ -48,5 +48,5 @@ public class Map {
 	static void linkPlaces(int i1, int i2) {
 		Map.places[i1].connectedPlaces.add(Map.places[i2]);
 		Map.places[i2].connectedPlaces.add(Map.places[i1]);
-	}
+	}	
 }

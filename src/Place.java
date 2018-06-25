@@ -11,4 +11,8 @@ public class Place {
 		name = str;
 		resource = r;
 	}
+	
+	boolean hasEnemy() {
+		return enemy>0;
+	}
 }

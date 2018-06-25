@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Stack;
 
 public class Utils {
 	static int randomNumber(int low, int high){
@@ -85,5 +86,28 @@ public class Utils {
 			}
 		}
 		return places;
+	}
+	
+	static boolean isSeparetedByEnemy(Place place1, Place place2) {
+		if (place1.hasEnemy() || place2.hasEnemy()) {
+			return true;
+		}
+		HashSet<Place> hs = new HashSet<Place>();
+		Stack<Place> st = new Stack<Place>();
+		st.push(place1);
+		hs.add(place1);
+		while (!st.isEmpty()) {
+			Place currentPlace = st.pop();
+			if (currentPlace == place2) {
+				//found a path without enemy
+				return false;
+			}
+			for (Place place:currentPlace.connectedPlaces) {
+				if (!hs.contains(place)&&!place.hasEnemy()) {
+					st.push(place);
+				}
+			}
+		}
+		return true;
 	}
 }
