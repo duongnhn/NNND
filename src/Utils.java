@@ -5,6 +5,8 @@ import java.util.Random;
 import java.util.Stack;
 
 public class Utils {
+	static Random gen = new Random();
+	
 	static int randomNumber(int low, int high){
 		Random r = new Random();
 		return r.nextInt(high-low+1) + low ;
@@ -16,6 +18,17 @@ public class Utils {
 		
 	static Place randomPlace(ArrayList<Place> arr) {
 		int i = randomNumber(0, arr.size()-1);
+		return arr.get(i);
+	}
+	
+	static Place randomPlaceOnWeight(ArrayList<Place> arr) {
+		int length = arr.size();
+		double[] weights = new double[length];
+		for (int i=0;i<length;i++) {
+			Place place = arr.get(i);
+			weights[i] = place.weight;
+		}
+		int i = randomNumber(weights);
 		return arr.get(i);
 	}
 	
@@ -70,7 +83,10 @@ public class Utils {
 		for (int i=0;i<length-1;i++) {
 			arr[i+1] += arr[i]; 
 		}
-		double change = Math.random();
+		for (int i=0;i<length;i++) {
+			arr[i] = arr[i]/arr[length-1];
+		}
+		double change = gen.nextDouble();
 		int n = 0;
 		while (arr[n]<change) {
 			n++;
