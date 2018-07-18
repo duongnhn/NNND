@@ -1,17 +1,17 @@
 # NNND
 This version contains following features:
+- Share resource between players without enemy intervention
 - Introduce weight for city when move
 - Added a new city.
 - Don't make use of any character and built-in skills
 - 3 actions: move, stop, build
-- Player choose action and place at uniformly random
-- Enemies are generated at uniformly random
+- Player choose action by some probabilities and place at weight
+- Enemies are generated at uniformly random and shuffle; player can run or defense.
 - Full maps of 25 places and their connections.
 - Multiple players support
 
 # Missing feature:
 - Swap resource
-- Share resource between players
  
 # Run simulator
 - Manually construct maps
