@@ -1,5 +1,6 @@
 # NNND
 This version contains following features:
+- Introduce weight for city when move
 - Added a new city.
 - Don't make use of any character and built-in skills
 - 3 actions: move, stop, build
