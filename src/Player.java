@@ -11,9 +11,6 @@ public class Player {
 	}
 	
 	void init() {
-		own = new Resource(Constants.NUMBER_OF_PLAYERS*Constants.WOOD_TO_START, 
-				Constants.NUMBER_OF_PLAYERS*Constants.STEEL_TO_START, 
-				Constants.NUMBER_OF_PLAYERS*Constants.FOOD_TO_START);
 		housePlaces = new ArrayList<Place>();
 	}
 	
