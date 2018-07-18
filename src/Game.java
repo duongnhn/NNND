@@ -36,6 +36,8 @@ public class Game {
 			int index = Utils.randomNumber(0, Constants.NUMBER_OF_PLACES-1);
 			player.place = Map.places[index];
 			visitedPlaces.add(player.place);
+			player.place.isVisited = true;
+			player.place.updateWeight();
 		}
 	}
 	
@@ -67,7 +69,7 @@ public class Game {
 							}
 							//can not build and move in the same turn
 							canBuild = false;
-							newPlace = Utils.randomPlace(currentPlace.connectedPlaces);
+							newPlace = Utils.randomPlaceOnWeight(currentPlace.connectedPlaces);
 							//re-assign before move
 							currentPlace = currentPlayer.place;
 							applyRuleForMove(currentPlayer, newPlace);
@@ -85,7 +87,9 @@ public class Game {
 					}
 					Utils.log("Player "+currentPlayer.index+" at place "+ currentPlayer.place.name);
 					visitedPlacesInTurn.add(newPlace);
-					if (isGameEnd()) return;					
+					if (isGameEnd()) return;
+					//update weight for map
+					map.updateWeight();
 				}
 				//player collect resource from current place and house
 				currentPlayer.collectResource();
@@ -111,8 +115,6 @@ public class Game {
 			Utils.log(visitedPlaces);
 		}
 	}
-	
-	
 
 	void removePlayers(ArrayList<Player> playersToRemove) {
 		for (Player player:playersToRemove) {
@@ -153,6 +155,7 @@ public class Game {
 	}	
 
 	void checkWinAfterMove(Place newPlace) {
+		newPlace.isVisited = true;
 		visitedPlaces.add(newPlace);
 		if (visitedPlaces.size() == Constants.NUMBER_OF_PLACES) {
 			status = Status.WIN;

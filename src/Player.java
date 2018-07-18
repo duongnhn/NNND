@@ -37,9 +37,11 @@ public class Player {
 			case RUN:
 				own.food -= Constants.FOOD_TO_MOVE;
 				ArrayList<Place> noEnemyPlaces = Utils.placesToRunFrom(place);
-				Place placeToRun = Utils.randomPlace(noEnemyPlaces);
+				Place placeToRun = Utils.randomPlaceOnWeight(noEnemyPlaces);
 				Utils.log("player run to place: "+ placeToRun.name);
 				place = placeToRun;
+				place.isVisited = true;
+				place.updateWeight();
 				break;
 		}
 	}
