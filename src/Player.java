@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Player {
 	Place place;
-	Resource own;
+	static Resource own;//all players share the same resource
 	ArrayList<Place> housePlaces;
 	int index;
 	
@@ -11,7 +11,9 @@ public class Player {
 	}
 	
 	void init() {
-		own = new Resource(Constants.WOOD_TO_START, Constants.STEEL_TO_START, Constants.FOOD_TO_START);
+		own = new Resource(Constants.NUMBER_OF_PLAYERS*Constants.WOOD_TO_START, 
+				Constants.NUMBER_OF_PLAYERS*Constants.STEEL_TO_START, 
+				Constants.NUMBER_OF_PLAYERS*Constants.FOOD_TO_START);
 		housePlaces = new ArrayList<Place>();
 	}
 	

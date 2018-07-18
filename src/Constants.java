@@ -11,7 +11,7 @@ public class Constants {
 	 * weight = init_weight - distance_factor*distance_to_unvisited_place - enemy_factor*number_of_enemy*/
 	
 	/* Game settings */
-	static final int NUMBER_OF_PLAYERS = 9;
+	static final int NUMBER_OF_PLAYERS = 4;
 	static final int NUMBER_OF_RESOURCE_TYPES = 3;
 	static final int NUMBER_OF_DRAW_FOR_ENEMY = 3;
 	static final int TOTAL_ENEMY_LIMIT = NUMBER_OF_DRAW_FOR_ENEMY*NUMBER_OF_PLACES;
