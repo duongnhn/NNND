@@ -4,28 +4,29 @@ enum Name {
 	HA_NOI,
 	HOA_BINH,
 	THAI_BINH,
-	THANH_HOA,
+	THANH_HOA, // sea
 	NGHE_AN,
 	TUYEN_QUANG,
 	CAO_BANG,
 	YEN_BAI,
 	THAI_NGUYEN,
 	SON_LA,
-	HAI_DUONG,
-	HAI_PHONG,
-	HUE,
-	QUANG_NAM,
+	HAI_DUONG,  // sea
+	HAI_PHONG, // sea
+	HUE, // sea
+	QUANG_NAM, // sea
 	KON_TUM,
-	QUANG_NGAI,
+	QUANG_NGAI, // sea
 	GIA_LAI,
-	PHU_YEN,
+	PHU_YEN, // sea
 	DAK_LAK,
-	KHANH_HOA,
+	KHANH_HOA, //sea
 	TAY_NINH,
-	LAM_DONG,
-	GIA_DINH,
+	LAM_DONG, // sea
+	GIA_DINH, // sea
 	KIEN_GIANG,
-	CA_MAU
+	CA_MAU, // sea
+	LONG_HO // sea
 }
 
 public class Map {
@@ -60,6 +61,7 @@ public class Map {
 		places[Name.GIA_DINH.ordinal()] = new Place(Name.GIA_DINH.toString(), new Resource(0, 0, 1));
 		places[Name.KIEN_GIANG.ordinal()] = new Place(Name.KIEN_GIANG.toString(), new Resource(0, 0, 1));
 		places[Name.CA_MAU.ordinal()] = new Place(Name.CA_MAU.toString(), new Resource(0, 0, 1));
+		places[Name.LONG_HO.ordinal()] = new Place(Name.LONG_HO.toString(), new Resource(0, 0, 1));
 		
 		//link places
 		linkPlaces(Name.TUYEN_QUANG.ordinal(), Name.CAO_BANG.ordinal());
@@ -92,8 +94,10 @@ public class Map {
 		linkPlaces(Name.LAM_DONG.ordinal(), Name.KHANH_HOA.ordinal());
 		linkPlaces(Name.LAM_DONG.ordinal(), Name.GIA_DINH.ordinal());
 		linkPlaces(Name.TAY_NINH.ordinal(), Name.GIA_DINH.ordinal());
-		linkPlaces(Name.KIEN_GIANG.ordinal(), Name.GIA_DINH.ordinal());
+		linkPlaces(Name.LONG_HO.ordinal(), Name.GIA_DINH.ordinal());
 		linkPlaces(Name.KIEN_GIANG.ordinal(), Name.CA_MAU.ordinal());
+		linkPlaces(Name.KIEN_GIANG.ordinal(), Name.LONG_HO.ordinal());
+		linkPlaces(Name.LONG_HO.ordinal(), Name.CA_MAU.ordinal());
 	
 		//enemy setup
 		count = -1;

@@ -1,5 +1,6 @@
 # NNND
 This version contains following features:
+- Added a new city.
 - Don't make use of any character and built-in skills
 - 3 actions: move, stop, build
 - Player choose action and place at uniformly random
