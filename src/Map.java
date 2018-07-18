@@ -61,10 +61,7 @@ public class Map {
 		places[Name.GIA_DINH.ordinal()] = new Place(Name.GIA_DINH.toString(), new Resource(0, 0, 1));
 		places[Name.KIEN_GIANG.ordinal()] = new Place(Name.KIEN_GIANG.toString(), new Resource(0, 0, 1));
 		places[Name.CA_MAU.ordinal()] = new Place(Name.CA_MAU.toString(), new Resource(0, 0, 1));
-<<<<<<< HEAD
 		places[Name.LONG_HO.ordinal()] = new Place(Name.LONG_HO.toString(), new Resource(0, 0, 1));
-=======
->>>>>>> 9021ef1bc24b295cb18b99e75200f7854ece4aaf
 		
 		//link places
 		linkPlaces(Name.TUYEN_QUANG.ordinal(), Name.CAO_BANG.ordinal());

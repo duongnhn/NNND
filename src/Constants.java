@@ -28,16 +28,9 @@ public class Constants {
 	static final int STEEL_TO_KILL = 1;
 	
 	/* Simulation configuration */
-<<<<<<< HEAD
-	static final int NUMBER_OF_TRIALS = 1000;
-	
-	/* Player configuration */
-	static final double[] PLAYER_ACTION_PROBABILITY = {0.5, 0.1, 0.4}; 	// MOVE, STOP, BUILD
-=======
 	static final int NUMBER_OF_TRIALS = 30000;
 	
 	/* Player configuration */
 	static final double[] PLAYER_ACTION_PROBABILITY = {0.6, 0.1, 0.3}; 	// MOVE, STOP, BUILD
->>>>>>> 9021ef1bc24b295cb18b99e75200f7854ece4aaf
 	static final double[] PLAYER_ENEMY_ACTION_PROBABILITY = {0.5, 0.5};  // KILL, RUN
 }
