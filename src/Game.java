@@ -65,14 +65,15 @@ public class Game {
 					newPlace = currentPlace;
 					switch (action) {
 						case MOVE:
+							newPlace = Utils.randomPlaceOnWeight(currentPlace.connectedPlaces);
 							//no food to go or can not kill enemy then no choice other than stay
-							if ((Player.own.food < Constants.FOOD_TO_MOVE) || (Player.own.steel < newPlace.enemy+Constants.STEEL_TO_KILL)) {
-								Utils.log("can not MOVE");
+							if (!currentPlayer.canMove() || !currentPlayer.canKillEnemyInPlace(newPlace)) {
+								Utils.log("can not MOVE, have to STOP");
+								newPlace = currentPlace;
 								break;
 							}
 							//can not build and move in the same turn
 							canBuild = false;
-							newPlace = Utils.randomPlaceOnWeight(currentPlace.connectedPlaces);
 							//re-assign before move
 							currentPlace = currentPlayer.place;
 							applyRuleForMove(currentPlayer, newPlace);
@@ -81,11 +82,12 @@ public class Game {
 							break;
 						case BUILD:
 							//cannot build if exists house or already move or not enough wood
-							if (currentPlace.hasHouse || (Player.own.wood < Constants.WOOD_TO_BUILD) || !canBuild) {
-								Utils.log("can not BUILD");
+							if (currentPlace.hasHouse || !currentPlayer.canBuild() || !canBuild) {
+								Utils.log("can not BUILD, have to STOP");
 								break;
 							}
-							applyRuleForBuild(currentPlayer, currentPlace);
+							// build house at currentPlayer.place
+							applyRuleForBuild(currentPlayer);
 							break;
 					}
 					Utils.log("Player "+currentPlayer.index+" at place "+ currentPlayer.place.name);
@@ -135,24 +137,22 @@ public class Game {
 		return true;
 	}
 	
-	void applyRuleForBuild(Player player, Place place) {
-		Player.own.wood -= Constants.WOOD_TO_BUILD;
-		player.housePlaces.add(place);
-		place.hasHouse = true;
+	void applyRuleForBuild(Player player) {
+		player.build();
+		player.housePlaces.add(player.place);
+		player.place.hasHouse = true;
 	}
 		
 	void applyRuleForMove(Player player, Place newPlace) {
 		Utils.log("newPlace: "+ newPlace.name);
-		//move need 1 food
-		Player.own.food -= Constants.FOOD_TO_MOVE;
-		//kill enemy if any and get booty
-		Player.own.steel -= newPlace.enemy>0? newPlace.enemy+Constants.STEEL_TO_KILL:0;
+		player.moveToNewPlace(newPlace);
+		// get booty
 		for (int i=0;i<newPlace.enemy;i++) {
 			Resource booty = Utils.randomBooty();
 			Player.own.add(booty);			
 		}
 		newPlace.enemy = 0;
-		//update player and place
+		// update player and place
 		player.place = newPlace;
 		checkWinAfterMove(newPlace);
 	}	
@@ -178,19 +178,19 @@ public class Game {
 		for (Player currentPlayer:players) {
 			if (currentPlayer.place == place) {
 				// currentPlayer face enemy
-				boolean canKill = Player.own.steel >= Constants.STEEL_TO_KILL;
-				boolean canRun = (Player.own.food >= Constants.FOOD_TO_MOVE) && (placesToRun.size()>0);
+				boolean canKill = currentPlayer.canKill();
+				boolean canRun = currentPlayer.canMove() && (placesToRun.size()>0);
 				if (!canKill && !canRun) {
 					//currentPlayer is dead
 					playersToRemove.add(currentPlayer);
 					continue;
 				}
 				EnemyAction playerEnemyAction = currentPlayer.selectEnemyAction();
-				if (!canKill) {
-					playerEnemyAction = EnemyAction.RUN;
-				}
 				if (!canRun) {
 					playerEnemyAction = EnemyAction.KILL;
+				}
+				else {
+					playerEnemyAction = EnemyAction.RUN;
 				}
 				currentPlayer.performEnemyAction(playerEnemyAction);
 				checkWinAfterMove(currentPlayer.place);

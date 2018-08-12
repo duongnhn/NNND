@@ -44,10 +44,7 @@ public class Player {
 				break;
 		}
 	}
-	
-	void run() {
-	}
-	
+		
 	void collectResource(ArrayList<Place> places) {
 		for (Place place:places) {
 			own.add(place.resource);
@@ -64,5 +61,40 @@ public class Player {
 				own.add(place.resource);
 			}
 		}
+	}
+	
+	boolean canKill() {
+		return own.steel>=Constants.STEEL_TO_KILL;
+	}
+	
+	boolean canBuild() {
+		return own.wood>=Constants.WOOD_TO_BUILD;
+	}
+	
+	boolean canMove() {
+		return own.food>=Constants.FOOD_TO_MOVE;
+	}
+	
+	boolean canKillEnemyInPlace(Place newPlace) {
+		return own.steel>=Constants.STEEL_TO_KILL+newPlace.enemy;
+	}
+	
+	void build() {
+		own.wood -= Constants.WOOD_TO_BUILD;
+	}
+	
+	void move() {
+		own.food -= Constants.FOOD_TO_MOVE;
+	}
+	
+	void kill() {
+		own.steel -= Constants.STEEL_TO_KILL;
+	}
+	
+	void moveToNewPlace(Place newPlace) {
+		//move need 1 food
+		own.food -= Constants.FOOD_TO_MOVE;
+		//kill enemy if any
+		own.steel -= newPlace.enemy>0? newPlace.enemy+Constants.STEEL_TO_KILL:0;
 	}
 }

@@ -8,7 +8,7 @@ public class Constants {
 	static final double DISTANCE_FACTOR = 15;
 	/* Formula to compute weight for each place 
 	 * weight = init_weight/(distance_factor^distance_to_unvisited_place)
-	 * with factor = 2
+	 * with factor = 2, init_weight = 1
 	 * distance = 0 -> weight = 1/2^0
 	 * distance = 1 -> weight = 1/2^1
 	 * distance = 2 -> weight = 1/2^2
@@ -30,7 +30,7 @@ public class Constants {
 	static final int STEEL_TO_KILL = 1;
 	
 	/* Simulation configuration */
-	static final int NUMBER_OF_TRIALS = 10000;
+	static final int NUMBER_OF_TRIALS = 30000;
 	
 	/* Player configuration */
 	static final double[] PLAYER_ACTION_PROBABILITY = {0.6, 0.1, 0.3}; 	// MOVE, STOP, BUILD
