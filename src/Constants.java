@@ -35,4 +35,5 @@ public class Constants {
 	/* Player configuration */
 	static final double[] PLAYER_ACTION_PROBABILITY = {0.6, 0.1, 0.3}; 	// MOVE, STOP, BUILD
 	static final double[] PLAYER_ENEMY_ACTION_PROBABILITY = {0.5, 0.5};  // KILL, RUN
+	static final Role DEFAULT_ROLE = Role.MAC_DANG_DUNG; // Currently, all players have the same default role.
 }

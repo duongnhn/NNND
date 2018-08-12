@@ -5,10 +5,17 @@ public class Player {
 	static Resource own;//all players share the same resource
 	ArrayList<Place> housePlaces;
 	int index;
+	Role role;
 	
 	Player(int i){
 		index = i;
 	}
+	
+	Player(int i, Role r){
+		index = i;
+		role = r;
+	}
+	
 	
 	void init() {
 		housePlaces = new ArrayList<Place>();
@@ -30,11 +37,12 @@ public class Player {
 		Utils.log("player perform enemy action: "+action.toString());
 		switch (action) {
 			case KILL:
-				own.steel -= Constants.STEEL_TO_KILL;
+				boolean inDefense = true;
+				kill(inDefense);
 				place.enemy = 0;					
 				break;
 			case RUN:
-				own.food -= Constants.FOOD_TO_MOVE;
+				move();
 				ArrayList<Place> noEnemyPlaces = Utils.placesToRunFrom(place);
 				Place placeToRun = Utils.randomPlaceOnWeight(noEnemyPlaces);
 				Utils.log("player run to place: "+ placeToRun.name);
@@ -44,21 +52,27 @@ public class Player {
 				break;
 		}
 	}
-		
-	void collectResource(ArrayList<Place> places) {
-		for (Place place:places) {
-			own.add(place.resource);
-		}
-	}
-	
+			
 	void collectResource() {
 		own.add(place.resource);
+		// if place has house that belongs to others and Mac Dang Dung then collect again
+		if (role == Role.MAC_DANG_DUNG && place.hasHouse && !housePlaces.contains(place)) {
+			own.add(place.resource);
+		}
 	}
 	
 	void collectFromHouses() {
 		for (Place place:housePlaces) {
 			if (place.enemy == 0) {
 				own.add(place.resource);
+				// if resource is food and Phung Khac Khoan then collect again
+				if ((role == Role.PHUNG_KHAC_KHOAN) && (place.resource.food == 1)) {
+					own.add(place.resource);
+				}
+				// if it is the first place and Dao Duy Tu then collect again
+				if ((role == Role.DAO_DUY_TU) && housePlaces.indexOf(place) == 0) {
+					own.add(place.resource);
+				}
 			}
 		}
 	}
@@ -67,6 +81,13 @@ public class Player {
 		return own.steel>=Constants.STEEL_TO_KILL;
 	}
 	
+	boolean canKill(boolean inDefense) {
+		if (inDefense && role == Role.NGUYEN_TRI_PHUONG) {
+			return true;
+		}
+		return canKill();
+	}
+
 	boolean canBuild() {
 		return own.wood>=Constants.WOOD_TO_BUILD;
 	}
@@ -87,6 +108,13 @@ public class Player {
 		own.food -= Constants.FOOD_TO_MOVE;
 	}
 	
+	void kill(boolean inDefense) {
+		if (inDefense && role == Role.NGUYEN_TRI_PHUONG) {
+			return;
+		}
+		kill();
+	}
+
 	void kill() {
 		own.steel -= Constants.STEEL_TO_KILL;
 	}

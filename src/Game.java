@@ -19,7 +19,7 @@ public class Game {
 		//initialize players
 		players = new ArrayList<Player>();
 		for (int i=0;i<Constants.NUMBER_OF_PLAYERS;i++) {
-			Player player = new Player(i);
+			Player player = new Player(i, Constants.DEFAULT_ROLE);
 			player.init();
 			players.add(player);
 		}
@@ -178,7 +178,8 @@ public class Game {
 		for (Player currentPlayer:players) {
 			if (currentPlayer.place == place) {
 				// currentPlayer face enemy
-				boolean canKill = currentPlayer.canKill();
+				boolean inDefense = true;
+				boolean canKill = currentPlayer.canKill(inDefense);
 				boolean canRun = currentPlayer.canMove() && (placesToRun.size()>0);
 				if (!canKill && !canRun) {
 					//currentPlayer is dead
