@@ -49,7 +49,7 @@ public class Place {
 	}
 	
 	void updateWeight() {
-		weight = Constants.INIT_WEIGHT_FOR_EACH_PLACE- Constants.DISTANCE_FACTOR*distance() - Constants.ENEMY_FACTOR*enemy;
+		weight = Constants.INIT_WEIGHT_FOR_EACH_PLACE/Math.pow(Constants.DISTANCE_FACTOR, distance());
 		weight = weight<0? 0: weight;
 	}
 }
