@@ -19,6 +19,12 @@ public class Player {
 	
 	void init() {
 		housePlaces = new ArrayList<Place>();
+		// draw location
+		place = Utils.randomPlace();
+		if (role == Role.NGUYEN_ANH) {
+			housePlaces.add(place);
+			place.hasHouse = true;
+		}
 	}
 	
 	Action selectAction() {
@@ -46,8 +52,9 @@ public class Player {
 				ArrayList<Place> noEnemyPlaces = Utils.placesToRunFrom(place);
 				Place placeToRun = Utils.randomPlaceOnWeight(noEnemyPlaces);
 				Utils.log("player run to place: "+ placeToRun.name);
+				place.removePlayer();
 				place = placeToRun;
-				place.isVisited = true;
+				place.addPlayer();
 				place.updateWeight();
 				break;
 		}
@@ -97,7 +104,7 @@ public class Player {
 	}
 	
 	boolean canKillEnemyInPlace(Place newPlace) {
-		return own.steel>=Constants.STEEL_TO_KILL+newPlace.enemy;
+		return (own.steel+newPlace.numberOfPlayersAround()-1)>=(Constants.STEEL_TO_KILL+newPlace.enemy);
 	}
 	
 	void build() {
@@ -123,6 +130,11 @@ public class Player {
 		//move need 1 food
 		own.food -= Constants.FOOD_TO_MOVE;
 		//kill enemy if any
-		own.steel -= newPlace.enemy>0? newPlace.enemy+Constants.STEEL_TO_KILL:0;
+		if (role == Role.BUI_THI_XUAN) {
+			own.steel -= newPlace.enemy>0? newPlace.enemy+Constants.STEEL_TO_KILL-newPlace.numberOfPlayersAround()+1:0;			
+		}
+		else {
+			own.steel -= newPlace.enemy>0? newPlace.enemy+Constants.STEEL_TO_KILL:0;
+		}
 	}
 }

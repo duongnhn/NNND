@@ -16,72 +16,64 @@ public class Game {
 	int numberOfGeneratedEnemy;
 
 	void init() {
-		//initialize players
+		// initialize Map
+		map = new Map();
+		map.init();
+		// initialize players
 		players = new ArrayList<Player>();
 		for (int i=0;i<Constants.NUMBER_OF_PLAYERS;i++) {
 			Player player = new Player(i, Constants.DEFAULT_ROLE);
 			player.init();
+			visitedPlaces.add(player.place);
+			player.place.addPlayer();
+			player.place.updateWeight();
 			players.add(player);
 		}
 		Player.own = new Resource(Constants.NUMBER_OF_PLAYERS*Constants.WOOD_TO_START, 
 				Constants.NUMBER_OF_PLAYERS*Constants.STEEL_TO_START, 
 				Constants.NUMBER_OF_PLAYERS*Constants.FOOD_TO_START);
-		//initialize Map
-		map = new Map();
-		map.init();
-		drawPlayersLocation();
-		//start with no enemy
+		// start with no enemy
 		numberOfGeneratedEnemy = 0;
 	}
-	
-	void drawPlayersLocation() {
-		for (Player player:players) {
-			int index = Utils.randomNumber(0, Constants.NUMBER_OF_PLACES-1);
-			player.place = Map.places[index];
-			visitedPlaces.add(player.place);
-			player.place.isVisited = true;
-			player.place.updateWeight();
-		}
-	}
-	
+		
 	void perform() {
 		init();				
 		while (true) {
-			//start a turn
+			// start a turn
 			Utils.log("++++++++++++++++++++++");
 			Utils.log("Start a turn");
 			ArrayList<Player> playersToRemove = new ArrayList<Player>();
 			for (Player currentPlayer: players) {
 				Utils.log("Start a turn for player "+ currentPlayer.index);
-				//player choose action
+				// player choose action
 				Place newPlace = null;
 				Place currentPlace = currentPlayer.place;
 				ArrayList<Place> visitedPlacesInTurn = new ArrayList<Place>();
 				boolean canBuild = true;
-				//player can move until he/she choose to stop or can not move
+				// player can move until he/she choose to stop or can not move
 				while (newPlace != currentPlace) {
-					//player choose an action
+					// player choose an action
 					Action action = currentPlayer.selectAction();
 					newPlace = currentPlace;
 					switch (action) {
 						case MOVE:
 							newPlace = Utils.randomPlaceOnWeight(currentPlace.connectedPlaces);
-							//no food to go or can not kill enemy then no choice other than stay
+							// no food to go or can not kill enemy then no choice other than stay
 							if (!currentPlayer.canMove() || !currentPlayer.canKillEnemyInPlace(newPlace)) {
 								Utils.log("can not MOVE, have to STOP");
 								newPlace = currentPlace;
 								break;
 							}
-							//can not build and move in the same turn
+							// can not build and move in the same turn
 							canBuild = false;
-							//re-assign before move
+							// re-assign before move
 							currentPlace = currentPlayer.place;
 							applyRuleForMove(currentPlayer, newPlace);
 							break;
 						case STOP:
 							break;
 						case BUILD:
-							//cannot build if exists house or already move or not enough wood
+							// cannot build if exists house or already move or not enough wood
 							if (currentPlace.hasHouse || !currentPlayer.canBuild() || !canBuild) {
 								Utils.log("can not BUILD, have to STOP");
 								break;
@@ -93,13 +85,13 @@ public class Game {
 					Utils.log("Player "+currentPlayer.index+" at place "+ currentPlayer.place.name);
 					visitedPlacesInTurn.add(newPlace);
 					if (isGameEnd()) return;
-					//update weight for map
+					// update weight for map
 					map.updateWeight();
 				}
-				//player collect resource from current place and house
+				// player collect resource from current place and house
 				currentPlayer.collectResource();
 				currentPlayer.collectFromHouses();
-				//put enemy
+				// draw enemy
 				ArrayList<Player> playersToRemoveForThisEnemy;
 				for (int i=0;i<Constants.NUMBER_OF_ENEMY_PER_TURN;i++) {
 					Place enemyPlace = map.generateEnemy();
@@ -109,10 +101,10 @@ public class Game {
 					}
 					if (isGameEnd()) return;
 				}
-				//end a turn for one player
+				// end a turn for one player
 				Utils.log("End a turn for player "+currentPlayer.index);
 			}
-			//remove any dead players before ending a turn
+			// remove any dead players before ending a turn
 			removePlayers(playersToRemove);
 			if (isGameEnd()) return;
 			Utils.log("End a turn");
@@ -153,7 +145,9 @@ public class Game {
 		}
 		newPlace.enemy = 0;
 		// update player and place
+		player.place.removePlayer();
 		player.place = newPlace;
+		player.place.addPlayer();
 		checkWinAfterMove(newPlace);
 	}	
 
@@ -169,7 +163,7 @@ public class Game {
 		ArrayList<Player> playersToRemove = new ArrayList<Player>();
 		Utils.log("enemyPlace: "+place.name);
 		numberOfGeneratedEnemy++;
-		//check if number of generated enemy reach limit
+		// check if number of generated enemy reach limit
 		if (numberOfGeneratedEnemy == Constants.TOTAL_ENEMY_LIMIT) {
 			status = Status.LOSE;
 			return playersToRemove;
@@ -182,7 +176,7 @@ public class Game {
 				boolean canKill = currentPlayer.canKill(inDefense);
 				boolean canRun = currentPlayer.canMove() && (placesToRun.size()>0);
 				if (!canKill && !canRun) {
-					//currentPlayer is dead
+					// currentPlayer is dead
 					playersToRemove.add(currentPlayer);
 					continue;
 				}

@@ -21,6 +21,11 @@ public class Utils {
 		return arr.get(i);
 	}
 	
+	static Place randomPlace() {
+		int index = Utils.randomNumber(0, Constants.NUMBER_OF_PLACES-1);
+		return Map.places[index];		
+	}
+	
 	static Place randomPlaceOnWeight(ArrayList<Place> arr) {
 		int length = arr.size();
 		double[] weights = new double[length];

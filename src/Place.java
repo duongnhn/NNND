@@ -8,6 +8,7 @@ public class Place {
 	ArrayList<Place> connectedPlaces = new ArrayList<Place>();
 	Boolean hasHouse;
 	int enemy;
+	int player;
 	String name;
 	Boolean isVisited;
 	double weight;//the bigger the more important to visit
@@ -18,6 +19,7 @@ public class Place {
 		isVisited = false;
 		weight = Constants.INIT_WEIGHT_FOR_EACH_PLACE;
 		enemy = 0;
+		player = 0;
 		hasHouse = false;
 	}
 	
@@ -51,5 +53,22 @@ public class Place {
 	void updateWeight() {
 		weight = Constants.INIT_WEIGHT_FOR_EACH_PLACE/Math.pow(Constants.DISTANCE_FACTOR, distance());
 		weight = weight<0? 0: weight;
+	}
+	
+	void addPlayer() {
+		isVisited = true;
+		player++;
+	}
+	
+	void removePlayer() {
+		player--;
+	}
+	
+	int numberOfPlayersAround() { // include this place and neighbors
+		int number = player;
+		for (Place place:connectedPlaces) {
+			number += place.player;
+		}
+		return number;
 	}
 }
